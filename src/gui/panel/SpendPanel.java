@@ -1,5 +1,7 @@
 package gui.panel;
 
+import gui.page.SpendPage;
+import service.SpendService;
 import util.CircleBar;
 import util.ColorUtil;
 import util.GuiUtil;
@@ -7,7 +9,7 @@ import util.GuiUtil;
 import javax.swing.*;
 import java.awt.*;
 
-public class SpendPanel extends JPanel {
+public class SpendPanel extends WorkingPanel {
 
     JLabel lMonthSpend = new JLabel("本月消费");
     JLabel lTodaySpend = new JLabel("今日消费");
@@ -22,6 +24,8 @@ public class SpendPanel extends JPanel {
     JLabel vMonthAvailable = new JLabel("￥2084");
     JLabel vDayAvgAvailable = new JLabel("￥389");
     JLabel vMonthLeftDay = new JLabel("15天");
+
+    CircleBar circleBar = new CircleBar();
 
     public void setMonthSpend(int num) {
         vMonthSpend.setText("￥" + num);
@@ -82,7 +86,7 @@ public class SpendPanel extends JPanel {
     }
 
     private Component center_east() {
-        CircleBar circleBar = new CircleBar();
+
         circleBar.setBackgroundColor(ColorUtil.blueColor);
         return circleBar;
     }
@@ -114,4 +118,36 @@ public class SpendPanel extends JPanel {
     public static void main(String[] args) {
         GuiUtil.showPanel(SpendPanel.instance);
     }
+
+    public void updateData() {
+        SpendPage spend = new SpendService().getSpendPage();
+        vMonthSpend.setText(spend.monthSpend);
+        vTodaySpend.setText(spend.todaySpend);
+        vAvgSpendPerDay.setText(spend.avgSpendPerDay);
+        vMonthAvailable.setText(spend.monthAvailable);
+        vDayAvgAvailable.setText(spend.dayAvgAvailable);
+        vMonthLeftDay.setText(spend.monthLeftDay);
+
+        circleBar.setPercentage(spend.usagePercentage);
+        if (spend.isOverSpend) {
+            vMonthAvailable.setForeground(ColorUtil.warningColor);
+            vMonthSpend.setForeground(ColorUtil.warningColor);
+            vTodaySpend.setForeground(ColorUtil.warningColor);
+
+        } else {
+            vMonthAvailable.setForeground(ColorUtil.grayColor);
+            vMonthSpend.setForeground(ColorUtil.blueColor);
+            vTodaySpend.setForeground(ColorUtil.blueColor);
+        }
+        circleBar.setFrontColor(ColorUtil.getByPercentage(spend.usagePercentage));
+        addListener();
+
+    }
+
+    public void addListener() {
+        // Do nothing
+
+    }
+
+
 }
