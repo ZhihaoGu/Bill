@@ -9,7 +9,7 @@ import javax.swing.*;
 public class RecoverPanel extends JPanel {
     public static RecoverPanel instance = new RecoverPanel();
 
-    JButton bRecover = new JButton("恢复");
+    JButton bRecover = new JButton("恢复(未完成)");
 
     public RecoverPanel() {
 
