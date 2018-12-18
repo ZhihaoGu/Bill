@@ -5,7 +5,7 @@ import java.sql.*;
 public class DBUtil {
 
     static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    static final String DB_URL = "jdbc:mysql://localhost:3306/javaMySQL?useSSL=false&useUnicode=true&characterEncoding=UTF-8";
+    static final String DB_URL = "jdbc:mysql://localhost:3306/Bill?useSSL=false&useUnicode=true&characterEncoding=UTF-8";
     static final String USER = "root";
     static final String PASS = "000000";
 

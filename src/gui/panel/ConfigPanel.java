@@ -1,5 +1,6 @@
 package gui.panel;
 
+import gui.listener.ConfigListener;
 import util.ColorUtil;
 import util.GuiUtil;
 
@@ -36,6 +37,12 @@ public class ConfigPanel extends JPanel {
         pSubmit.add(bSubmit);
         this.add(pSubmit, BorderLayout.CENTER);
 
+        addListener();
+    }
+
+    private void addListener() {
+        ConfigListener l =new ConfigListener();
+        bSubmit.addActionListener(l);
     }
 
     public static void main(String[] args) {

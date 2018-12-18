@@ -14,7 +14,7 @@ import entity.Record;
 import util.DBUtil;
 import util.DateUtil;
 
-public class RecordDao {
+public class RecordDAO {
 
     public int getTotal() {
         int total = 0;

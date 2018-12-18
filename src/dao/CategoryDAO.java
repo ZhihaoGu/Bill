@@ -11,7 +11,7 @@ import java.util.List;
 import entity.Category;
 import util.DBUtil;
 
-public class CategoryDao {
+public class CategoryDAO {
 
     public int getTotal() {
         int total = 0;
