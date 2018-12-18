@@ -1,35 +1,43 @@
 package gui.panel;
 
-
-import gui.model.CategoryComboBoxModel;
-import util.ColorUtil;
-import util.GuiUtil;
-
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.Date;
 
-import javax.swing.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.jdesktop.swingx.JXDatePicker;
 
+import entity.Category;
+import gui.listener.RecordListener;
+import gui.model.CategoryComboBoxModel;
+import service.CategoryService;
+import util.ColorUtil;
+import util.GuiUtil;
 
-public class RecordPanel extends JPanel {
+public class RecordPanel extends WorkingPanel {
 
     public static RecordPanel instance = new RecordPanel();
+
     JLabel lSpend = new JLabel("花费(￥)");
     JLabel lCategory = new JLabel("分类");
     JLabel lComment = new JLabel("备注");
     JLabel lDate = new JLabel("日期");
+
     public JTextField tfSpend = new JTextField("0");
+
     public CategoryComboBoxModel cbModel = new CategoryComboBoxModel();
-    public JComboBox<String> cbCategory = new JComboBox<>(cbModel);
+    public JComboBox<Category> cbCategory = new JComboBox<>(cbModel);
     public JTextField tfComment = new JTextField();
     public JXDatePicker datepick = new JXDatePicker(new Date());
+
     JButton bSubmit = new JButton("记一笔");
 
-    private RecordPanel() {
-        this.setLayout(new BorderLayout());
+    public RecordPanel() {
         GuiUtil.setColor(ColorUtil.grayColor, lSpend,lCategory,lComment,lDate);
         GuiUtil.setColor(ColorUtil.blueColor, bSubmit);
         JPanel pInput =new JPanel();
@@ -47,12 +55,43 @@ public class RecordPanel extends JPanel {
         pInput.add(datepick);
 
         pSubmit.add(bSubmit);
+
+        this.setLayout(new BorderLayout());
         this.add(pInput,BorderLayout.NORTH);
         this.add(pSubmit,BorderLayout.CENTER);
 
+        addListener();
     }
 
     public static void main(String[] args) {
         GuiUtil.showPanel(RecordPanel.instance);
     }
+
+    public Category getSelectedCategory(){
+        return (Category) cbCategory.getSelectedItem();
+    }
+
+    @Override
+    public void updateData() {
+        cbModel.cs = new CategoryService().list();
+        cbCategory.updateUI();
+        resetInput();
+        tfSpend.grabFocus();
+    }
+
+    public void resetInput(){
+        tfSpend.setText("0");
+        tfComment.setText("");
+        if(0!=cbModel.cs.size())
+            cbCategory.setSelectedIndex(0);
+        datepick.setDate(new Date());
+    }
+
+    @Override
+    public void addListener() {
+        // TODO Auto-generated method stub
+        RecordListener listener = new RecordListener();
+        bSubmit.addActionListener(listener);
+    }
+
 }
